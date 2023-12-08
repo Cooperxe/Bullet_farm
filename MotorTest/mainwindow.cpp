@@ -31,6 +31,7 @@ void MainWindow::CANMenu()
     // 事件
     setCAN_action = new QAction("启动设置(&N)");
     fileMenu->addAction(setCAN_action);
+    connect(setCAN_action, SIGNAL(triggered()), this, SLOT(openCanSetWindow()));
 
     // 颜色
     QString styleSheet =
@@ -48,6 +49,6 @@ void MainWindow::CANMenu()
 
 void MainWindow::openCanSetWindow()
 {
-//    qDebug("open");
+      qDebug("open");
 //    canSetWindow.show();
 }
