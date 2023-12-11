@@ -49,6 +49,7 @@ void MainWindow::CANMenu()
 
 void MainWindow::openCanSetWindow()
 {
-      qDebug("open");
-//    canSetWindow.show();
+    qDebug("open");
+    Canseting *CansetWidget  = new Canseting();
+    CansetWidget->show(); // 显示新窗口
 }
