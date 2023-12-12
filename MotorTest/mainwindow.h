@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "canseting.h"
+#include "canthread.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -19,8 +21,8 @@ public:
     void CANMenu();
 
 private slots:
-    void openCanSetWindow();
-
+    void CanSetWindow();
+    void CanOpenWindow();
 private:
     Ui::MainWindow *ui;
     QMenu *fileMenu;
@@ -28,7 +30,10 @@ private:
     QMenu *helpMenu;
 
     QAction *setCAN_action ;
-    Canseting *CansetWidget;
+    QAction *openCAN_action;
+
+    Canseting *CANsetting;
+    CANThread *canthread;
 };
 
 #endif // MAINWINDOW_H

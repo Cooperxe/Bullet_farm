@@ -5,6 +5,9 @@
 #include <QMetaType>
 #include <string.h>
 
+VCI_BOARD_INFO vbi;
+
+
 CANThread::CANThread()
 {
     stopped = false;
@@ -17,119 +20,257 @@ void CANThread::stop()
     stopped = true;
 }
 
+bool CANThread::openDevice()
+{
+        int nDeviceType = deviceType; /* USBCAN-2A或USBCAN-2C或CANalyst-II */
+        int nDeviceInd = debicIndex; /* 第1个设备 */
+        int nCANInd = debicCom; /* 第1个通道 */
+        DWORD dwRel;
+        dwRel = VCI_OpenDevice(nDeviceType, nDeviceInd, nCANInd);
+        if(dwRel != 1)
+        {
+            qDebug()<<"open fail:";
+            return false;
+        }
+        else
+            //        qDebug()<<"open success";
+
+            dwRel = VCI_ClearBuffer(nDeviceType, nDeviceInd, nCANInd);
+        dwRel = VCI_ClearBuffer(nDeviceType, nDeviceInd, nCANInd+1);
+        VCI_INIT_CONFIG vic;
+        vic.AccCode=0x80000008;
+        vic.AccMask=0xFFFFFFFF;
+        vic.Filter=1;
+        vic.Mode=0;
+        switch (baundRate) {
+        case 10:
+            vic.Timing0=0x31;
+            vic.Timing1=0x1c;
+            break;
+        case 20:
+            vic.Timing0=0x18;
+            vic.Timing1=0x1c;
+            break;
+        case 40:
+            vic.Timing0=0x87;
+            vic.Timing1=0xff;
+            break;
+        case 50:
+            vic.Timing0=0x09;
+            vic.Timing1=0x1c;
+            break;
+        case 80:
+            vic.Timing0=0x83;
+            vic.Timing1=0xff;
+            break;
+        case 100:
+            vic.Timing0=0x04;
+            vic.Timing1=0x1c;
+            break;
+        case 125:
+            vic.Timing0=0x03;
+            vic.Timing1=0x1c;
+            break;
+        case 200:
+            vic.Timing0=0x81;
+            vic.Timing1=0xfa;
+            break;
+        case 250:
+            vic.Timing0=0x01;
+            vic.Timing1=0x1c;
+            break;
+        case 400:
+            vic.Timing0=0x80;
+            vic.Timing1=0xfa;
+            break;
+        case 500:
+            vic.Timing0=0x00;
+            vic.Timing1=0x1c;
+            break;
+        case 666:
+            vic.Timing0=0x80;
+            vic.Timing1=0xb6;
+            break;
+        case 800:
+            vic.Timing0=0x00;
+            vic.Timing1=0x16;
+            break;
+        case 1000:
+            vic.Timing0=0x00;
+            vic.Timing1=0x14;
+            break;
+        case 33:
+            vic.Timing0=0x09;
+            vic.Timing1=0x6f;
+            break;
+        case 66:
+            vic.Timing0=0x04;
+            vic.Timing1=0x6f;
+            break;
+        case 83:
+            vic.Timing0=0x03;
+            vic.Timing1=0x6f;
+            break;
+        default:
+            break;
+        }
+        dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, nCANInd, &vic);
+        dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, nCANInd+1, &vic);
+        if(dwRel !=1)
+        {
+            qDebug()<<"init fail:";
+            return false;
+        }
+        else
+            //        qDebug()<<"init success";
+
+
+            dwRel = VCI_ReadBoardInfo(nDeviceType, nDeviceInd, &vbi);
+        if(dwRel != 1)
+        {
+            //        qDebug()<<"get dev message fail:"<<MB_OK<<MB_ICONQUESTION;
+            return false;
+        }
+        else
+        {
+            qDebug()<<"CAN通道数："<<vbi.can_Num;
+                                             qDebug()<<"硬件版本号:"<<vbi.hw_Version;
+                                              qDebug()<<"接口库版本号："<<vbi.in_Version;
+                            qDebug()<<"中断号"<<vbi.irq_Num;
+        }
+
+        if(VCI_StartCAN(nDeviceType, nDeviceInd, nCANInd) !=1)
+        {
+            qDebug()<<"start"<<nCANInd<<"fail:";
+            return false;
+        }
+        else
+            qDebug()<<"start 端口号"<<nCANInd<<"打开 success:";
+
+        int comid = nCANInd+1;
+        if(VCI_StartCAN(nDeviceType, nDeviceInd, comid) !=1)
+        {
+            //        qDebug()<<"start"<<comid<<"fail:"<<MB_OK<<MB_ICONQUESTION;
+            return false;
+        }
+        else
+            qDebug()<<"start 端口号"<<comid<<"打开 success:";
+
+        return true;
+}
 
 //1.打开设备
-bool CANThread::openDevice(UINT deviceType,UINT debicIndex,UINT baundRate)
-{
-    m_deviceType = deviceType;/* USBCAN-2A或USBCAN-2C或CANalyst-II */
-    m_debicIndex = debicIndex;/* 第1个设备 */
-    m_baundRate = baundRate;
-    unsigned int dwRel;
-    dwRel = VCI_OpenDevice(m_deviceType, m_debicIndex, 0);
-    if(dwRel != 1)
-        return false;
-    else
-        qDebug()<<"open success";
-    return true;
-}
+//bool CANThread::openDevice(UINT deviceType,UINT debicIndex,UINT baundRate)
+//{
+//    m_deviceType = deviceType;/* USBCAN-2A或USBCAN-2C或CANalyst-II */
+//    m_debicIndex = debicIndex;/* 第1个设备 */
+//    m_baundRate = baundRate;
+//    unsigned int dwRel;
+//    dwRel = VCI_OpenDevice(m_deviceType, m_debicIndex, 0);
+//    if(dwRel != 1)
+//        return false;
+//    else
+//        qDebug()<<"open success";
+//    return true;
+//}
 
-//2.初始化CAN
-bool CANThread::initCAN()
-{
-    unsigned int dwRel = VCI_ClearBuffer(m_deviceType, m_debicIndex, 0);
-    dwRel = VCI_ClearBuffer(m_deviceType, m_debicIndex, 1);
-    VCI_INIT_CONFIG vic;
-    vic.AccCode=0x80000008;
-    vic.AccMask=0xFFFFFFFF;
-    vic.Filter=1;
-    vic.Mode=0;
-    switch (m_baundRate) {
-    case 10:
-        vic.Timing0=0x31;
-        vic.Timing1=0x1c;
-        break;
-    case 20:
-        vic.Timing0=0x18;
-        vic.Timing1=0x1c;
-        break;
-    case 40:
-        vic.Timing0=0x87;
-        vic.Timing1=0xff;
-        break;
-    case 50:
-        vic.Timing0=0x09;
-        vic.Timing1=0x1c;
-        break;
-    case 80:
-        vic.Timing0=0x83;
-        vic.Timing1=0xff;
-        break;
-    case 100:
-        vic.Timing0=0x04;
-        vic.Timing1=0x1c;
-        break;
-    case 125:
-        vic.Timing0=0x03;
-        vic.Timing1=0x1c;
-        break;
-    case 200:
-        vic.Timing0=0x81;
-        vic.Timing1=0xfa;
-        break;
-    case 250:
-        vic.Timing0=0x01;
-        vic.Timing1=0x1c;
-        break;
-    case 400:
-        vic.Timing0=0x80;
-        vic.Timing1=0xfa;
-        break;
-    case 500:
-        vic.Timing0=0x00;
-        vic.Timing1=0x1c;
-        break;
-    case 666:
-        vic.Timing0=0x80;
-        vic.Timing1=0xb6;
-        break;
-    case 800:
-        vic.Timing0=0x00;
-        vic.Timing1=0x16;
-        break;
-    case 1000:
-        vic.Timing0=0x00;
-        vic.Timing1=0x14;
-        break;
-    case 33:
-        vic.Timing0=0x09;
-        vic.Timing1=0x6f;
-        break;
-    case 66:
-        vic.Timing0=0x04;
-        vic.Timing1=0x6f;
-        break;
-    case 83:
-        vic.Timing0=0x03;
-        vic.Timing1=0x6f;
-        break;
-    default:
-        break;
-    }
-    dwRel = VCI_InitCAN(m_deviceType, m_debicIndex, 0, &vic);
-    dwRel = VCI_InitCAN(m_deviceType, m_debicIndex, 1, &vic);
-    if(dwRel !=1)
-        return false;
-    else
-        qDebug()<<"init success";
+////2.初始化CAN
+//bool CANThread::initCAN()
+//{
+//    unsigned int dwRel = VCI_ClearBuffer(m_deviceType, m_debicIndex, 0);
+//    dwRel = VCI_ClearBuffer(m_deviceType, m_debicIndex, 1);
+//    VCI_INIT_CONFIG vic;
+//    vic.AccCode=0x80000008;
+//    vic.AccMask=0xFFFFFFFF;
+//    vic.Filter=1;
+//    vic.Mode=0;
+//    switch (m_baundRate) {
+//    case 10:
+//        vic.Timing0=0x31;
+//        vic.Timing1=0x1c;
+//        break;
+//    case 20:
+//        vic.Timing0=0x18;
+//        vic.Timing1=0x1c;
+//        break;
+//    case 40:
+//        vic.Timing0=0x87;
+//        vic.Timing1=0xff;
+//        break;
+//    case 50:
+//        vic.Timing0=0x09;
+//        vic.Timing1=0x1c;
+//        break;
+//    case 80:
+//        vic.Timing0=0x83;
+//        vic.Timing1=0xff;
+//        break;
+//    case 100:
+//        vic.Timing0=0x04;
+//        vic.Timing1=0x1c;
+//        break;
+//    case 125:
+//        vic.Timing0=0x03;
+//        vic.Timing1=0x1c;
+//        break;
+//    case 200:
+//        vic.Timing0=0x81;
+//        vic.Timing1=0xfa;
+//        break;
+//    case 250:
+//        vic.Timing0=0x01;
+//        vic.Timing1=0x1c;
+//        break;
+//    case 400:
+//        vic.Timing0=0x80;
+//        vic.Timing1=0xfa;
+//        break;
+//    case 500:
+//        vic.Timing0=0x00;
+//        vic.Timing1=0x1c;
+//        break;
+//    case 666:
+//        vic.Timing0=0x80;
+//        vic.Timing1=0xb6;
+//        break;
+//    case 800:
+//        vic.Timing0=0x00;
+//        vic.Timing1=0x16;
+//        break;
+//    case 1000:
+//        vic.Timing0=0x00;
+//        vic.Timing1=0x14;
+//        break;
+//    case 33:
+//        vic.Timing0=0x09;
+//        vic.Timing1=0x6f;
+//        break;
+//    case 66:
+//        vic.Timing0=0x04;
+//        vic.Timing1=0x6f;
+//        break;
+//    case 83:
+//        vic.Timing0=0x03;
+//        vic.Timing1=0x6f;
+//        break;
+//    default:
+//        break;
+//    }
+//    dwRel = VCI_InitCAN(m_deviceType, m_debicIndex, 0, &vic);
+//    dwRel = VCI_InitCAN(m_deviceType, m_debicIndex, 1, &vic);
+//    if(dwRel !=1)
+//        return false;
+//    else
+//        qDebug()<<"init success";
 
-    VCI_BOARD_INFO vbi;
-    dwRel = VCI_ReadBoardInfo(m_deviceType, m_debicIndex, &vbi);
-    if(dwRel != 1)
-        return false;
-    else
-        emit boardInfo(vbi);
-    return true;
-}
+//    VCI_BOARD_INFO vbi;
+//    dwRel = VCI_ReadBoardInfo(m_deviceType, m_debicIndex, &vbi);
+//    if(dwRel != 1)
+//        return false;
+//    else
+//        emit boardInfo(vbi);
+//    return true;
+//}
 
 //3.启动CAN
 bool CANThread::startCAN()

@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     CANMenu();
+
+    CANsetting = new Canseting();
 }
 
 MainWindow::~MainWindow()
@@ -29,9 +31,13 @@ void MainWindow::CANMenu()
     helpMenu = ui->menubar->addMenu("帮助(&H)");
 
     // 事件
-    setCAN_action = new QAction("启动设置(&N)");
+    setCAN_action = new QAction("设置CAN(&N)");
+    openCAN_action = new QAction("启动CAN(&O)");
     fileMenu->addAction(setCAN_action);
-    connect(setCAN_action, SIGNAL(triggered()), this, SLOT(openCanSetWindow()));
+    fileMenu->addAction(openCAN_action);
+
+    connect(setCAN_action, SIGNAL(triggered()), this, SLOT(CanSetWindow()));
+    connect(openCAN_action, SIGNAL(triggered()), this, SLOT(CanOpenWindow()));
 
     // 颜色
     QString styleSheet =
@@ -47,9 +53,13 @@ void MainWindow::CANMenu()
     helpMenu->setStyleSheet(styleSheet);
 }
 
-void MainWindow::openCanSetWindow()
+void MainWindow::CanSetWindow()
 {
     qDebug("open");
-    Canseting *CansetWidget  = new Canseting();
-    CansetWidget->show(); // 显示新窗口
+    CANsetting->show(); // 显示新窗口
+}
+
+void MainWindow::CanOpenWindow()
+{
+    this->hide();
 }

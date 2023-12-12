@@ -14,8 +14,8 @@ public:
     void stop();
 
     //1.打开设备
-    bool openDevice(UINT deviceType,UINT debicIndex,UINT baundRate);
-
+//    bool openDevice(UINT deviceType,UINT debicIndex,UINT baundRate);
+    bool openDevice();
     //2.初始化CAN
     bool initCAN();
 
@@ -35,6 +35,11 @@ public:
     UINT m_debicIndex;
     UINT m_baundRate;
     UINT m_debicCom;
+
+    int deviceType;
+    int debicIndex;
+    int baundRate;
+    int debicCom;
 
     bool stopped;
 
