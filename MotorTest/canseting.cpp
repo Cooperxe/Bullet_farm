@@ -17,7 +17,16 @@ Canseting::~Canseting()
 
 void Canseting::on_pushButton_clicked()//打开设置
 {
-    this->hide();
+      CANtype = 4;//ui->baundRate->currentIndex();
+      index = ui->comboBox_2->currentIndex();
+      baundRate = (int)ui->comboBox_3->currentText().remove("Kbps").toFloat();
+      devicCOM = ui->comboBox_4->currentIndex();
+
+      qDebug() << "CAN type:" << CANtype;
+      qDebug() << "Index:" << index;
+      qDebug() << "Baud Rate:" << baundRate;
+      qDebug() << "Device COM:" << devicCOM;
+      this->hide();
 }
 
 

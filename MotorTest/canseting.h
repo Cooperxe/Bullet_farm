@@ -14,6 +14,10 @@ class Canseting : public QWidget
 public:
     explicit Canseting(QWidget *parent = nullptr);
     ~Canseting();
+    int CANtype;//CAN卡类型
+    int index;//索引号
+    int baundRate;//波特率
+    int devicCOM;//端口号
 
 private slots:
     void on_pushButton_clicked();
