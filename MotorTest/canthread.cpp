@@ -5,7 +5,6 @@
 #include <QMetaType>
 #include <string.h>
 
-VCI_BOARD_INFO vbi;
 
 
 CANThread::CANThread()
@@ -37,10 +36,10 @@ bool CANThread::openDevice()
             return false;
         }
         else
-            //        qDebug()<<"open success";
+            qDebug()<<"open success";
 
-            dwRel = VCI_ClearBuffer(nDeviceType, nDeviceInd, nCANInd);
-        dwRel = VCI_ClearBuffer(nDeviceType, nDeviceInd, nCANInd+1);
+            dwRel = VCI_ClearBuffer(nDeviceType, nDeviceInd, 0);
+        dwRel = VCI_ClearBuffer(nDeviceType, nDeviceInd, 1);
         VCI_INIT_CONFIG vic;
         vic.AccCode=0x80000008;
         vic.AccMask=0xFFFFFFFF;
@@ -118,47 +117,47 @@ bool CANThread::openDevice()
         default:
             break;
         }
-        dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, nCANInd, &vic);
-        dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, nCANInd+1, &vic);
+        dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, 0, &vic);
+      //dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, 1, &vic);
         if(dwRel !=1)
         {
-            qDebug()<<"init fail:";
+            qDebug()<<"init fail";
             return false;
         }
         else
-            //        qDebug()<<"init success";
+            qDebug()<<"init success";
 
+        VCI_BOARD_INFO vbi;
 
             dwRel = VCI_ReadBoardInfo(nDeviceType, nDeviceInd, &vbi);
         if(dwRel != 1)
         {
-            //        qDebug()<<"get dev message fail:"<<MB_OK<<MB_ICONQUESTION;
             return false;
         }
         else
         {
             qDebug()<<"CAN通道数："<<vbi.can_Num;
-                                             qDebug()<<"硬件版本号:"<<vbi.hw_Version;
-                                              qDebug()<<"接口库版本号："<<vbi.in_Version;
-                            qDebug()<<"中断号"<<vbi.irq_Num;
+            qDebug()<<"硬件版本号:"<<vbi.hw_Version;
+            qDebug()<<"接口库版本号："<<vbi.in_Version;
+            qDebug()<<"中断号"<<vbi.irq_Num;
+            emit boardInfo(vbi);
         }
 
         if(VCI_StartCAN(nDeviceType, nDeviceInd, nCANInd) !=1)
         {
-            qDebug()<<"start"<<nCANInd<<"fail:";
+            qDebug()<<"start 0 fail";
             return false;
         }
         else
-            qDebug()<<"start 端口号"<<nCANInd<<"打开 success:";
+            qDebug()<<"start 1 fail";
 
-        int comid = nCANInd+1;
-        if(VCI_StartCAN(nDeviceType, nDeviceInd, comid) !=1)
+        if(VCI_StartCAN(nDeviceType, nDeviceInd, 1) !=1)
         {
-            //        qDebug()<<"start"<<comid<<"fail:"<<MB_OK<<MB_ICONQUESTION;
+            qDebug()<<"start 1 fail";
             return false;
         }
         else
-            qDebug()<<"start 端口号"<<comid<<"打开 success:";
+            qDebug()<<"start 1 success:";
 
         return true;
 }
