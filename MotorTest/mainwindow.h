@@ -25,6 +25,8 @@ private slots:
     void CanOpenWindow();
 private:
     Ui::MainWindow *ui;
+    bool CANState;
+
     QMenu *fileMenu;
     QMenu *editMenu;
     QMenu *helpMenu;

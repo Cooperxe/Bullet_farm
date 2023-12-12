@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     CANMenu();
 
     CANsetting = new Canseting();
+    canthread = new CANThread();
+
 }
 
 MainWindow::~MainWindow()
@@ -61,5 +63,33 @@ void MainWindow::CanSetWindow()
 
 void MainWindow::CanOpenWindow()
 {
-    this->hide();
+    qDebug("into CanOpenWindow\r\n");
+    if(!CANState)
+    {
+        qDebug("if CANStatus = 0\r\n");
+
+        canthread->deviceType = CANsetting->CANtype;
+        canthread->debicIndex = CANsetting->index;
+        canthread->baundRate = CANsetting->baundRate;
+        canthread->debicCom = CANsetting->devicCOM;
+        bool dev = canthread->openDevice();
+        if(dev == true) {
+            canthread->start();
+            CANState=true;
+            this->setCAN_action->setEnabled(false);
+            this->openCAN_action->setText("关闭CAN(&O)");
+        }
+        qDebug()<< "openCAN";
+    }
+    else
+    {
+        qDebug("if CANStatus = 1\r\n");
+
+        this->setCAN_action->setEnabled(true);
+        this->openCAN_action->setText("启动CAN(&O)");
+        canthread->stop();
+        canthread->closeDevice();
+        CANState=false ;
+        qDebug()<< "closeCAN";
+    }
 }

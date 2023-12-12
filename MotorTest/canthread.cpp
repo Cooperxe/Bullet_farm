@@ -25,6 +25,10 @@ bool CANThread::openDevice()
         int nDeviceType = deviceType; /* USBCAN-2A或USBCAN-2C或CANalyst-II */
         int nDeviceInd = debicIndex; /* 第1个设备 */
         int nCANInd = debicCom; /* 第1个通道 */
+        qDebug() << "Device Type: " << nDeviceType;
+        qDebug() << "Device Index: " << nDeviceInd;
+        qDebug() << "CAN Channel Index: " << nCANInd;
+
         DWORD dwRel;
         dwRel = VCI_OpenDevice(nDeviceType, nDeviceInd, nCANInd);
         if(dwRel != 1)
@@ -314,8 +318,9 @@ bool CANThread::sendData(UINT channel,UINT ID,BYTE remoteFlag,BYTE externFlag,co
 //5.关闭设备
 void CANThread::closeDevice()
 {
-    VCI_CloseDevice(m_deviceType, m_debicIndex);
+    VCI_CloseDevice(deviceType, debicIndex);
 }
+
 
 //0.复位设备，复位后回到3
 bool CANThread::reSetCAN()
