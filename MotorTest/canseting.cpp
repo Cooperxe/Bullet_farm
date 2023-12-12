@@ -14,3 +14,15 @@ Canseting::~Canseting()
 {
     delete ui;
 }
+
+void Canseting::on_pushButton_clicked()//打开设置
+{
+    this->hide();
+}
+
+
+void Canseting::on_pushButton_2_clicked()//关闭设置
+{
+    this->hide();
+}
+

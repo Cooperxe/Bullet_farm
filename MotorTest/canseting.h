@@ -15,6 +15,11 @@ public:
     explicit Canseting(QWidget *parent = nullptr);
     ~Canseting();
 
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::Canseting *ui;
 };
