@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    CANMenu();
+    CANMenu();                                        //CAN设置启动
 
     CANsetting = new Canseting();
     canthread = new CANThread();
@@ -92,4 +92,11 @@ void MainWindow::CanOpenWindow()
         CANState=false ;
         qDebug()<< "MainWindow->closeCAN";
     }
+}
+
+
+//发送
+void MainWindow::SendCAN(quint32 ID,quint16 charge ,bool state){
+    this->canthread->dischage_chage_send(ID,charge,state);
+
 }

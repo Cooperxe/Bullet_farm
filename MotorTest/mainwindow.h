@@ -18,11 +18,14 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
     void CANMenu();
 
 private slots:
     void CanSetWindow();
     void CanOpenWindow();
+    void SendCAN(quint32 ID,quint16 charge ,bool state);
+
 private:
     Ui::MainWindow *ui;
     bool CANState;

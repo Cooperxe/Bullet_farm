@@ -1,10 +1,18 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPushButton>
+
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
     MainWindow W;
     W.show();
     return a.exec();

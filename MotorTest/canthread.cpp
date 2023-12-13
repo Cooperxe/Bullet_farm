@@ -5,6 +5,9 @@
 #include <QMetaType>
 #include <string.h>
 
+#define ExtEndable 1
+
+MotorStrut MotorCurrentdate[Motor_Num];
 
 
 CANThread::CANThread()
@@ -183,17 +186,18 @@ bool CANThread::startCAN()
 }
 
 //4.发送数据
-bool CANThread::sendData(UINT channel,UINT ID,BYTE remoteFlag,BYTE externFlag,const unsigned char *data,BYTE len)
+bool CANThread::sendData(qint32 ID, quint8 *ch, qint32 comNum)
 {
     unsigned int dwRel;
     VCI_CAN_OBJ vco;
+
     vco.ID = ID ;
-    vco.RemoteFlag = remoteFlag;
-    vco.ExternFlag = externFlag;
-    vco.DataLen = len;
-    for(UINT j = 0;j < len;j++)
-        vco.Data[j] = data[j];
-    dwRel = VCI_Transmit(m_deviceType, m_debicIndex, channel,&vco,1);
+    vco.RemoteFlag = 0;
+    vco.ExternFlag = ExtEndable;
+    vco.DataLen = 8;
+    for(UINT j = 0;j < 8;j++)
+        vco.Data[j] = ch[j];
+    dwRel = VCI_Transmit(m_deviceType, m_debicIndex, comNum,&vco,1);
     if(dwRel>0)
         return true;
     else
@@ -250,4 +254,30 @@ void CANThread::sleep(int msec)
     QTime dieTime = QTime::currentTime().addMSecs(msec);
     while( QTime::currentTime() < dieTime )
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
+void CANThread::dischage_chage_send(quint32 ID, quint16 charge, bool state)
+{
+    quint32 form = ID >> 16; //设备类型
+    quint32 formNum = (ID >> 8) & 0x000000FF; //设备序号
+    quint32 formframe = ID & 0x000000FF; //设备帧序号
+
+    if (formNum <= Motor_Num && formframe <= Motor_frame_Num)
+    {
+        if (!state)
+        {
+            MotorCurrentdate[0].frame[0].date[formNum].date16 = charge;
+            qDebug() << "DateChange";
+            qDebug()
+                     << "Motor1" << MotorCurrentdate[0].frame[0].date[0].date16
+                     << "Motor2" << MotorCurrentdate[0].frame[0].date[1].date16
+                     << "Motor3" << MotorCurrentdate[0].frame[0].date[2].date16
+                     << "Motor4" << MotorCurrentdate[0].frame[0].date[3].date16;
+        }
+        else
+        {
+            sendData(0x10010000, MotorCurrentdate[0].frame[0].date8, debicCom);
+            qDebug() << "SEND";
+        }
+    }
 }

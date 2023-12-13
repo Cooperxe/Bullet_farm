@@ -15,6 +15,7 @@ SOURCES += \
     canthread.cpp \
     main.cpp \
     mainwindow.cpp \
+    motor.cpp \
     qcustomplot.cpp
 
 HEADERS += \
@@ -22,11 +23,13 @@ HEADERS += \
     canseting.h \
     canthread.h \
     mainwindow.h \
+    motor.h \
     qcustomplot.h
 
 FORMS += \
     canseting.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    motor.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
