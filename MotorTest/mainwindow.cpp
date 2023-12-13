@@ -79,7 +79,7 @@ void MainWindow::CanOpenWindow()
             this->setCAN_action->setEnabled(false);
             this->openCAN_action->setText("关闭CAN(&O)");
         }
-        qDebug()<< "openCAN";
+        qDebug()<< "MainWindow->openCAN";
     }
     else
     {
@@ -90,6 +90,6 @@ void MainWindow::CanOpenWindow()
         canthread->stop();
         canthread->closeDevice();
         CANState=false ;
-        qDebug()<< "closeCAN";
+        qDebug()<< "MainWindow->closeCAN";
     }
 }
