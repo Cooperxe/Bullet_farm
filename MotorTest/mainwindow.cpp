@@ -7,6 +7,8 @@
 #include <QStatusBar>
 #include <QDebug>
 #include <QPushButton>
+#include <QSplitter>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     CANMenu();                                        //CAN设置启动
+    ModelViewShow();
 
     CANsetting = new Canseting();
     canthread = new CANThread();
@@ -32,35 +35,65 @@ void MainWindow::CANMenu()
     editMenu = ui->menubar->addMenu("编辑(&E)");
     helpMenu = ui->menubar->addMenu("帮助(&H)");
 
-    // 事件
+    // 创建菜单项
     setCAN_action = new QAction("设置CAN(&N)");
     openCAN_action = new QAction("启动CAN(&O)");
     fileMenu->addAction(setCAN_action);
     fileMenu->addAction(openCAN_action);
 
+    // 连接信号和槽
     connect(setCAN_action, SIGNAL(triggered()), this, SLOT(CanSetWindow()));
     connect(openCAN_action, SIGNAL(triggered()), this, SLOT(CanOpenWindow()));
 
-    // 颜色
+    // 设置样式表
     QString styleSheet =
-        "QMenuBar { background-color: white; color: black; }" // 菜单栏背景颜色和文字颜色
-        "QMenuBar::item { background-color: white; }" // 菜单栏中的菜单项背景颜色
-        "QMenuBar::item:selected { background-color: lightblue; }" // 菜单项悬停时的背景颜色（淡蓝色）
-        "QMenu { background-color: white; }" // 菜单背景颜色
-        "QMenu::item:selected { background-color: lightblue; }"; // 菜单项悬停时的背景颜色（淡蓝色）
 
+
+        "QMenuBar { background-color: rgb(3, 73, 252); color: white; }"
+        "QMenuBar::item { background-color: rgb(3, 73, 252); color: white; }"
+        "QMenuBar::item:selected { background-color: rgb(192, 192, 192); }"
+        "QMenu { background-color: rgb(3, 73, 252); color: white; }"
+        "QMenu::item:selected { background-color: rgb(192, 192, 192); }";
+
+    ui->centralwidget->setStyleSheet(styleSheet);
     ui->menubar->setStyleSheet(styleSheet);
     fileMenu->setStyleSheet(styleSheet);
     editMenu->setStyleSheet(styleSheet);
     helpMenu->setStyleSheet(styleSheet);
 }
 
+
+void MainWindow::ModelViewShow()
+{
+    QSplitter *verticalSplitter = new QSplitter(ui->scrollArea);
+    verticalSplitter->setOrientation(Qt::Vertical);
+    ui->verticalLayout_3->addWidget(verticalSplitter);
+
+    for (quint16 i = 0; i < Motor_Num; i++) {
+        motor *Motor = new motor();
+
+        Motor->MotorNumber = i;
+        Motor->setTitle("Motor:" + QString::number(i + 1));
+
+        QSplitter *horizontalSplitter = new QSplitter(Qt::Horizontal);
+        horizontalSplitter->addWidget(Motor);
+
+        verticalSplitter->addWidget(horizontalSplitter);
+
+        connect(Motor, SIGNAL(dischage_chage(quint32, quint16, bool)), this, SLOT(SendCAN(quint32, quint16, bool)));
+    }
+}
+
+
+
+//can设置 槽
 void MainWindow::CanSetWindow()
 {
     qDebug("open");
     CANsetting->show(); // 显示新窗口
 }
 
+//can启动 槽
 void MainWindow::CanOpenWindow()
 {
     qDebug("into CanOpenWindow\r\n");
@@ -95,7 +128,7 @@ void MainWindow::CanOpenWindow()
 }
 
 
-//发送
+//发送 槽
 void MainWindow::SendCAN(quint32 ID,quint16 charge ,bool state){
     this->canthread->dischage_chage_send(ID,charge,state);
 

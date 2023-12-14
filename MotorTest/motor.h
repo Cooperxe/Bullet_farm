@@ -1,19 +1,23 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-#include <QWidget>
+#include <QGroupBox>
 
 namespace Ui {
 class motor;
 }
 
-class motor : public QWidget
+class motor : public QGroupBox
 {
     Q_OBJECT
 
 public:
     explicit motor(QWidget *parent = nullptr);
     ~motor();
+
+    quint16 MotorNumber;
+
+    void Make_Curve();
 
 private:
     Ui::motor *ui;

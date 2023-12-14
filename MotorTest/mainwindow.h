@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "canseting.h"
 #include "canthread.h"
-
+#include "motor.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,7 +20,7 @@ public:
 
 
     void CANMenu();
-
+    void ModelViewShow();
 private slots:
     void CanSetWindow();
     void CanOpenWindow();

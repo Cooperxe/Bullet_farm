@@ -1,18 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>motor</class>
- <widget class="QWidget" name="motor">
+ <widget class="QGroupBox" name="motor">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1136</width>
-    <height>437</height>
+    <width>664</width>
+    <height>90</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>GroupBox</string>
   </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>参数设置</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>定位角度</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>电机转速</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_2"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>输出电流</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_3"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

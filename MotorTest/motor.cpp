@@ -2,7 +2,7 @@
 #include "ui_motor.h"
 
 motor::motor(QWidget *parent) :
-    QWidget(parent),
+    QGroupBox(parent),
     ui(new Ui::motor)
 {
     ui->setupUi(this);
@@ -11,4 +11,10 @@ motor::motor(QWidget *parent) :
 motor::~motor()
 {
     delete ui;
+}
+
+
+void motor::Make_Curve()
+{
+
 }
