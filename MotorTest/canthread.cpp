@@ -235,6 +235,8 @@ bool CANThread::reSetCAN()
 
 void CANThread::run()
 {
+    qDebug("canthread -->  run");
+
     while(!stopped)
     {
         unsigned int dwRel;
@@ -253,6 +255,10 @@ void CANThread::run()
         {
             qDebug()<<"设备不存在或USB掉线";
         }
+
+        uchar kk[8] = {0x01,0xD8,0x01,0x31,0x3A,0x98,0x01,0x09};
+        sendData(0x10060000,kk,debicCom+1);
+
         sleep(30);
     }
     stopped = false;
@@ -293,6 +299,8 @@ void CANThread::dischage_chage_send(quint32 ID, quint16 charge, bool state)
 
 int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
 {
+    qDebug("canthread -->  dealDate");
+
     quint32 form=vci[i].ID>>16; //设备类型
     quint32 formNum=(vci[i].ID>>8)&0x000000FF; //设备序号
     quint32 formframe=vci[i].ID&0x000000FF; //设备帧序号
@@ -301,6 +309,8 @@ int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
     if((formNum)>0x10||formframe>Motor_frame_Num) return false;
     for (quint8 j=0;j<8;j++) {
         MotorCurrentdate[formNum-0x10].frame[formframe].date8[j]=vci[i].Data[j];
+        qDebug() << MotorCurrentdate[formNum - 0x10].frame[formframe].date8[j];
+
     }
     Motor_State[formNum]=true;
 
