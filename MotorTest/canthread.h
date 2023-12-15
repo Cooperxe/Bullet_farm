@@ -4,13 +4,12 @@
 #include <QThread>
 #include "ControlCAN.h"
 #include <QDebug>
+#include "QElapsedTimer"
 
 //设备数量
 #define Motor_Num 10 //电机数量
 
 //数据帧数
-#define BMS_frame_Num 8    //电池保护板帧数量
-#define Mppt_frame_Num 2  //mppt 帧数量
 #define Motor_frame_Num 3 //电机帧数量
 #define SEM_frame_Num 2 //控制帧数量
 
@@ -63,6 +62,9 @@ public:
     //Motor发送
     void dischage_chage_send(quint32 ID, quint16 charge, bool state);
 
+    //Motor接受
+    int dealDate(VCI_CAN_OBJ *vci,quint32 i);
+
     UINT m_deviceType;
     UINT m_debicIndex;
     UINT m_baundRate;
@@ -76,7 +78,7 @@ public:
     bool stopped;
 
 signals:
-    void getProtocolData(VCI_CAN_OBJ *vci,unsigned int dwRel,unsigned int channel);
+    void getProtocolData(VCI_CAN_OBJ *vci,unsigned int dwRel);
     void boardInfo(VCI_BOARD_INFO vbi);
 
 private:

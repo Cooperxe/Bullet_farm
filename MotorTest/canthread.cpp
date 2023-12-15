@@ -9,12 +9,13 @@
 
 MotorStrut MotorCurrentdate[Motor_Num];
 
+bool Motor_State[Motor_Num];
 
 CANThread::CANThread()
 {
     stopped = false;
-    //qRegisterMetaType<VCI_CAN_OBJ>("VCI_CAN_OBJ");
-    //qRegisterMetaType<unsigned int>("DWORD");
+    qRegisterMetaType<VCI_CAN_OBJ>("VCI_CAN_OBJ");
+    qRegisterMetaType<unsigned int>("DWORD");
 }
 
 void CANThread::stop()
@@ -240,10 +241,18 @@ void CANThread::run()
         VCI_CAN_OBJ vco[2500];
         dwRel = VCI_Receive(m_deviceType, m_debicIndex, 0, vco,2500,0);
         if(dwRel > 0)
-            emit getProtocolData(vco,dwRel,0);
-        dwRel = VCI_Receive(m_deviceType, m_debicIndex, 1, vco,2500,0);
-        if(dwRel > 0)
-            emit getProtocolData(vco,dwRel,1);
+        {
+            for(qint32  i = 0;i<dwRel;i++)
+            {
+                dealDate(vco,i);
+
+            }
+            emit getProtocolData(vco,dwRel);
+        }
+        else if(dwRel == -1)
+        {
+            qDebug()<<"设备不存在或USB掉线";
+        }
         sleep(30);
     }
     stopped = false;
@@ -281,3 +290,21 @@ void CANThread::dischage_chage_send(quint32 ID, quint16 charge, bool state)
         }
     }
 }
+
+int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
+{
+    quint32 form=vci[i].ID>>16; //设备类型
+    quint32 formNum=(vci[i].ID>>8)&0x000000FF; //设备序号
+    quint32 formframe=vci[i].ID&0x000000FF; //设备帧序号
+
+    if((formNum-0x10)>Motor_Num||formframe>Motor_frame_Num) return false;
+    if((formNum)>0x10||formframe>Motor_frame_Num) return false;
+    for (quint8 j=0;j<8;j++) {
+        MotorCurrentdate[formNum-0x10].frame[formframe].date8[j]=vci[i].Data[j];
+    }
+    Motor_State[formNum]=true;
+
+}
+
+
+

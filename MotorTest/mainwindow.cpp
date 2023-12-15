@@ -54,7 +54,6 @@ void MainWindow::CANMenu()
         "QMenuBar::item:selected { background-color: rgb(192, 192, 192); }"
         "QMenu { background-color: rgb(3, 73, 252); color: white; }"
         "QMenu::item:selected { background-color: rgb(192, 192, 192); }";
-
     ui->centralwidget->setStyleSheet(styleSheet);
     ui->menubar->setStyleSheet(styleSheet);
     fileMenu->setStyleSheet(styleSheet);

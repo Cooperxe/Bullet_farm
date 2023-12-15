@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>775</width>
+    <width>994</width>
     <height>436</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>GroupBox</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0" colspan="2">
+   <item row="0" column="0" colspan="3">
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="1">
       <widget class="QLabel" name="label_6">
@@ -33,7 +33,7 @@
      <item row="3" column="4">
       <widget class="QLabel" name="label_19">
        <property name="text">
-        <string>TextLabel</string>
+        <string>指示输入CAN2油门丢失</string>
        </property>
       </widget>
      </item>
@@ -54,35 +54,35 @@
      <item row="1" column="5">
       <widget class="QLabel" name="label_24">
        <property name="text">
-        <string>TextLabel</string>
+        <string>CAN2接收状态</string>
        </property>
       </widget>
      </item>
      <item row="4" column="6">
       <widget class="QLabel" name="label_26">
        <property name="text">
-        <string>TextLabel</string>
+        <string>自检状态</string>
        </property>
       </widget>
      </item>
      <item row="4" column="7">
       <widget class="QLabel" name="label_30">
        <property name="text">
-        <string>TextLabel</string>
+        <string>过温限功率状态</string>
        </property>
       </widget>
      </item>
      <item row="4" column="4">
       <widget class="QLabel" name="label_18">
        <property name="text">
-        <string>TextLabel</string>
+        <string>CAN1接收状态</string>
        </property>
       </widget>
      </item>
      <item row="1" column="7">
       <widget class="QLabel" name="label_32">
        <property name="text">
-        <string>TextLabel</string>
+        <string>过电流告警</string>
        </property>
       </widget>
      </item>
@@ -96,7 +96,7 @@
      <item row="3" column="6">
       <widget class="QLabel" name="label_27">
        <property name="text">
-        <string>TextLabel</string>
+        <string>上电状态</string>
        </property>
       </widget>
      </item>
@@ -117,21 +117,21 @@
      <item row="4" column="5">
       <widget class="QLabel" name="label_22">
        <property name="text">
-        <string>TextLabel</string>
+        <string>电调过温告警</string>
        </property>
       </widget>
      </item>
      <item row="3" column="7">
       <widget class="QLabel" name="label_31">
        <property name="text">
-        <string>TextLabel</string>
+        <string>限电流状态</string>
        </property>
       </widget>
      </item>
      <item row="3" column="5">
       <widget class="QLabel" name="label_23">
        <property name="text">
-        <string>TextLabel</string>
+        <string>电机线包过温告警  </string>
        </property>
       </widget>
      </item>
@@ -159,7 +159,7 @@
      <item row="1" column="6">
       <widget class="QLabel" name="label_28">
        <property name="text">
-        <string>TextLabel</string>
+        <string>锁桨状态</string>
        </property>
       </widget>
      </item>
@@ -187,7 +187,7 @@
      <item row="3" column="1">
       <widget class="QLabel" name="label_13">
        <property name="text">
-        <string>欠压告警</string>
+        <string>过压告警</string>
        </property>
       </widget>
      </item>
@@ -215,28 +215,28 @@
      <item row="2" column="4">
       <widget class="QLabel" name="label_21">
        <property name="text">
-        <string>TextLabel</string>
+        <string>指示输入CAN1油门丢失</string>
        </property>
       </widget>
      </item>
      <item row="2" column="5">
       <widget class="QLabel" name="label_25">
        <property name="text">
-        <string>TextLabel</string>
+        <string>指示输入P波油门更新</string>
        </property>
       </widget>
      </item>
      <item row="2" column="6">
       <widget class="QLabel" name="label_29">
        <property name="text">
-        <string>TextLabel</string>
+        <string>锁桨定位异常或未校准</string>
        </property>
       </widget>
      </item>
      <item row="2" column="7">
       <widget class="QLabel" name="label_33">
        <property name="text">
-        <string>TextLabel</string>
+        <string>硬件异常</string>
        </property>
       </widget>
      </item>
@@ -246,7 +246,7 @@
     <widget class="QGroupBox" name="groupBox">
      <property name="minimumSize">
       <size>
-       <width>661</width>
+       <width>772</width>
        <height>261</height>
       </size>
      </property>
@@ -262,17 +262,6 @@
           <height>0</height>
          </size>
         </property>
-        <widget class="QWidget" name="horizontalLayoutWidget">
-         <property name="geometry">
-          <rect>
-           <x>-20</x>
-           <y>209</y>
-           <width>681</width>
-           <height>71</height>
-          </rect>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout"/>
-        </widget>
        </widget>
       </item>
      </layout>
@@ -283,7 +272,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>      曲线选择</string>
+        <string>      曲线选择    </string>
        </property>
       </widget>
      </item>
@@ -302,20 +291,13 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
+   <item row="1" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
       <widget class="QLineEdit" name="lineEdit"/>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pushButton">
        <property name="text">
         <string>PushButton</string>
        </property>
@@ -333,6 +315,20 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit_3"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>PushButton</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="statusbotton">
+       <property name="text">
+        <string>STATUS BOTTON</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
