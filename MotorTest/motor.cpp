@@ -102,7 +102,7 @@ void motor::Make_Curve_Time()
         //第二帧  "油门输入"，"电机温度",
         //第三帧"油门输出"，"MCU温度"
         if(this->Dateing){
-            dateView[ii]=(float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[2].date16))/1000;ii++;
+            dateView[ii]=(float)(date16change(a[MotorNumber].frame[0].date[2].date16))/1000;ii++;
             dateView[ii]=(float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[0].date16))/10;ii++;
             dateView[ii]=(float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[1].date16))/10;ii++;
             dateView[ii]=(dateView[2]*dateView[1]);ii++;

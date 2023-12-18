@@ -255,10 +255,6 @@ void CANThread::run()
         {
             qDebug()<<"设备不存在或USB掉线";
         }
-
-        uchar kk[8] = {0x01,0xD8,0x01,0x31,0x3A,0x98,0x01,0x09};
-        sendData(0x10060000,kk,debicCom+1);
-
         sleep(30);
     }
     stopped = false;
