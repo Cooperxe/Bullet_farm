@@ -36,7 +36,7 @@ bool CANThread::openDevice()
         dwRel = VCI_OpenDevice(nDeviceType, nDeviceInd, nCANInd);
         if(dwRel != 1)
         {
-            qDebug()<<"open fail:";
+            qDebug()<<"open fail";
             return false;
         }
         else
@@ -122,7 +122,7 @@ bool CANThread::openDevice()
             break;
         }
         dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, 0, &vic);
-      //dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, 1, &vic);
+        dwRel = VCI_InitCAN(nDeviceType, nDeviceInd, 1, &vic);
         if(dwRel !=1)
         {
             qDebug()<<"init fail";
@@ -241,7 +241,7 @@ void CANThread::run()
     {
         unsigned int dwRel;
         VCI_CAN_OBJ vco[2500];
-        dwRel = VCI_Receive(m_deviceType, m_debicIndex, 0, vco,2500,0);
+        dwRel = VCI_Receive(deviceType, debicIndex, 0, vco,2500,0);
         if(dwRel > 0)
         {
             for(qint32  i = 0;i<dwRel;i++)

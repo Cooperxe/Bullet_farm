@@ -95,7 +95,6 @@ void MainWindow::CanSetWindow()
 //can启动 槽
 void MainWindow::CanOpenWindow()
 {
-    qDebug("into CanOpenWindow\r\n");
     if(!CANState)
     {
         qDebug("if CANStatus = 0\r\n");
@@ -104,6 +103,12 @@ void MainWindow::CanOpenWindow()
         canthread->debicIndex = CANsetting->index;
         canthread->baundRate = CANsetting->baundRate;
         canthread->debicCom = CANsetting->devicCOM;
+
+        qDebug() << "Device Type: " << canthread->deviceType;
+        qDebug() << "Debic Index: " << canthread->debicIndex;
+        qDebug() << "Baund Rate: " << canthread->baundRate;
+        qDebug() << "Debic Com: " << canthread->debicCom;
+
         bool dev = canthread->openDevice();
         if(dev == true) {
             canthread->start();

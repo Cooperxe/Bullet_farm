@@ -5,6 +5,7 @@
 #include "canseting.h"
 #include "canthread.h"
 #include "motor.h"
+#include "ControlCAN.h"
 
 namespace Ui {
 class MainWindow;

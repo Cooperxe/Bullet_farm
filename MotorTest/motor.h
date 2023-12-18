@@ -6,6 +6,7 @@
 #include <QTimer>
 #include<QElapsedTimer>
 #include "canthread.h"
+#include "ControlCAN.h"
 
 namespace Ui {
 class motor;
