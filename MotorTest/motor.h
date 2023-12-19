@@ -36,6 +36,7 @@ private:
 
     QTimer dataTimer;
     QTimer dog;
+    QElapsedTimer timer;
 
 #define Graph_num_motor 8
     float dateView[Graph_num_motor];
