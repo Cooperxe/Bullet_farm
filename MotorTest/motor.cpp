@@ -111,7 +111,6 @@ void motor::Dog_Time(){
 void motor::Make_Curve_Time()
 {
     double key = timer.elapsed() / 1000.0; // 计算自启动以来的总秒数
-
     static double lastPointKey = 0;
     quint8 ii=0;
     if (key-lastPointKey > 0.002) // at most add point every 2 ms
@@ -148,8 +147,9 @@ void motor::Make_Curve_Time()
             ui->Motorqcustomplot->graph(i)->setName(GraphName[i]+QString("：")+QString::number(dateView[i])+GraphUnit[i]);
         }
 
-        ui->label_41->setText("test");
-
+//        ui->lcdNumber->display((float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[0].date16)) / 10);
+//        ui->lcdNumber_2->display((float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[1].date16)) / 10);
+//        ui->lcdNumber_3->display((float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[2].date16)) / 10);
 
         lastPointKey = key;
         if(Curve_Mdel)
@@ -159,7 +159,6 @@ void motor::Make_Curve_Time()
             }
             ui->Motorqcustomplot->xAxis->setRange(key+3, 15, Qt::AlignRight);
         }
-
     }
     ui->Motorqcustomplot->replot();
 }
