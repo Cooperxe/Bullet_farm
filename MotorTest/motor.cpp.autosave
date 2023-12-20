@@ -61,9 +61,9 @@ void motor::Make_Curve()
     ui->Motorqcustomplot->xAxis->setTicker(timeTicker);
 
     connect(&dataTimer, SIGNAL(timeout()), this, SLOT(Make_Curve_Time()));
-//    connect(&dog, SIGNAL(timeout()), this, SLOT(Dog_Time()));
-    dataTimer.start(20);
-    timer.start();
+    connect(&dog, SIGNAL(timeout()), this, SLOT(Dog_Time()));
+//    dataTimer.start(20);//test
+//    timer.start();      //test
 }
 
 
@@ -94,7 +94,7 @@ void motor::Make_Curve_Time()
 //    if(Motor_State[this->MotorNumber]==true){
 //        Dateing=true;
 //        dataTimer.start(0);
-
+         // timer.start();
 //        ui->statusbotton->setStyleSheet("border:2px groove gray;border-radius:4px;padding:2px 4px;background: green;color : yellow");
 //        ui->statusbotton->setText(QString::number(this->MotorNumber+1)+"号\n在线");
 //        Motor_State[this->MotorNumber]=false;

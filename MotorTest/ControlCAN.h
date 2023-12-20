@@ -29,7 +29,7 @@ typedef unsigned char       BYTE;
 typedef char				CHAR;
 typedef unsigned char		UCHAR;
 typedef int                 INT;
-typedef unsigned int        UINT;
+typedef unsigned int        UINT;//4byte
 typedef unsigned short		USHORT;
 typedef unsigned long		ULONG;
 typedef unsigned long       DWORD;
@@ -54,7 +54,7 @@ typedef  struct  _VCI_BOARD_INFO{
 
 //2.定义CAN信息帧的数据类型。
 typedef  struct  _VCI_CAN_OBJ{
-	UINT	ID;
+    UINT	ID;
 	UINT	TimeStamp;
 	BYTE	TimeFlag;
 	BYTE	SendType;
