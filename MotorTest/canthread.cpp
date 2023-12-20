@@ -301,14 +301,19 @@ int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
     quint32 formNum=(vci[i].ID>>8)&0x000000FF; //设备序号
     quint32 formframe=vci[i].ID&0x000000FF; //设备帧序号
 
-//    if((formNum-0x10)>Motor_Num||formframe>Motor_frame_Num) return false;
-//    if((formNum)>0x10||formframe>Motor_frame_Num) return false;
+    if((formNum)>Motor_Num||formframe>Motor_frame_Num) return false;
+    if((formNum)>0x10||formframe>Motor_frame_Num) return false;
     for (quint8 j=0;j<8;j++) {
-//        MotorCurrentdate[formNum-0x10].frame[formframe].date8[j]=vci[i].Data[j];
+        MotorCurrentdate[formNum].frame[formframe].date8[j]=vci[i].Data[j];
         qDebug() << vci[i].Data[j];
     }
-    Motor_State[formNum]=true;
 
+    Motor_State[formNum]=true;
+    if (formNum >= 0 && formNum < sizeof(Motor_State) / sizeof(Motor_State[0])) {
+        qDebug() << "Motor State at index" << formNum << ":" << Motor_State[formNum];
+    } else {
+        qDebug() << "formNum is out of range";
+    }
 }
 
 

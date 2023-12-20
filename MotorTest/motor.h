@@ -40,9 +40,9 @@ private:
 
 #define Graph_num_motor 8
     float dateView[Graph_num_motor];
-    QStringList GraphName={"输入转速","输出转速","电压","电流","功率","电调温度","电机温度","定位角度"};
+    QStringList GraphName={"输入电压","输入电流","输出电流","电调温度","转速输入","转速输出","电机温度","定位角度"};
     QColor colorline[Graph_num_motor] ={"red","blue","green","pink","Yellow","LightGray","Cyan","Magenta"};
-    QString GraphUnit[Graph_num_motor]={"Krpm/min","Krpm/min","V","A","W","℃","℃","℃"};
+    QString GraphUnit[Graph_num_motor]={"V","A","A","℃","Krpm/min","Krpm/min","℃","℃"};
     QCheckBox *CheckBox[Graph_num_motor];
 
 };
