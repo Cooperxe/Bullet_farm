@@ -36,6 +36,7 @@ void motor::Make_Curve()
 
     for (quint8  i =0;i<Graph_num_motor;i++)
     {
+        dateView[i] = 0;
         pen0[i].setWidth(2);//曲线的粗细
         pen0[i].setColor(colorline[i]);//蓝
 
@@ -117,8 +118,8 @@ void motor::Make_Curve_Time()
     {
         //曲线顺序"输入电压","输入电流","输出电流","电调温度","转速输入","转速输出","电机温度","定位角度"
 
-        //第一帧"转速","电压","电流","功率","电调温度"
-        //第二帧  "油门输入"，"电机温度",
+        //第一帧"输入电压","输入电流","输出电流","电调温度"
+        //第二帧  "转速输入","转速输出","电机温度","定位角度",
         //第三帧"油门输出"，"MCU温度"
         if(this->Dateing){
             dateView[ii]=(float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[0].date16))/10;ii++;
@@ -131,25 +132,13 @@ void motor::Make_Curve_Time()
             dateView[ii]=(date16change(MotorCurrentdate[MotorNumber].frame[1].date[2].date16))-200;ii++;
             dateView[ii]=(date16change(MotorCurrentdate[MotorNumber].frame[1].date[3].date16));ii++;
 
-            qDebug() << "Motor 0 Frame 0 Date 0: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[0].date16)) / 10;
-            qDebug() << "Motor 0 Frame 0 Date 1: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[1].date16)) / 10;
-            qDebug() << "Motor 0 Frame 0 Date 2: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[2].date16)) / 10;
-            qDebug() << "Motor 0 Frame 0 Date 3: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[3].date16)) - 200;
-            qDebug() << "Motor 0 Frame 1 Date 0: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[1].date[0].date16)) / 1000;
-            qDebug() << "Motor 0 Frame 1 Date 1: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[1].date[1].date16)) / 1000;
-            qDebug() << "Motor 0 Frame 1 Date 2: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[1].date[2].date16)) - 200;
-            qDebug() << "Motor 0 Frame 1 Date 3: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[1].date[3].date16));
 
-        }else{for(quint8 k=0;k<Graph_num_motor;k++){dateView[k]=1;}}
+        }else{for(quint8 k=0;k<Graph_num_motor;k++){dateView[k]=0;}}
 
         for (quint8 i =0;i<Graph_num_motor;i++) {
             ui->Motorqcustomplot->graph(i)->addData(key,dateView[i]);
             ui->Motorqcustomplot->graph(i)->setName(GraphName[i]+QString("：")+QString::number(dateView[i])+GraphUnit[i]);
         }
-
-//        ui->lcdNumber->display((float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[0].date16)) / 10);
-//        ui->lcdNumber_2->display((float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[1].date16)) / 10);
-//        ui->lcdNumber_3->display((float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[2].date16)) / 10);
 
         lastPointKey = key;
         if(Curve_Mdel)
@@ -160,5 +149,14 @@ void motor::Make_Curve_Time()
             ui->Motorqcustomplot->xAxis->setRange(key+3, 15, Qt::AlignRight);
         }
     }
+    qDebug() << "Motor 0 Frame 0 Date 0: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[0].date16)) / 10;
+    qDebug() << "Motor 0 Frame 0 Date 1: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[1].date16)) / 10;
+    qDebug() << "Motor 0 Frame 0 Date 2: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[2].date16)) / 10;
+    qDebug() << "Motor 0 Frame 0 Date 3: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[3].date16)) - 200;
+    qDebug() << "Motor 0 Frame 1 Date 0: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[1].date[0].date16)) / 1000;
+    qDebug() << "Motor 0 Frame 1 Date 1: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[1].date[1].date16)) / 1000;
+    qDebug() << "Motor 0 Frame 1 Date 2: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[1].date[2].date16)) - 200;
+    qDebug() << "Motor 0 Frame 1 Date 3: " << (float)(date16change(MotorCurrentdate[MotorNumber].frame[1].date[3].date16));
+
     ui->Motorqcustomplot->replot();
 }

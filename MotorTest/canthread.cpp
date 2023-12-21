@@ -309,11 +309,9 @@ int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
     }
 
     Motor_State[formNum]=true;
-    if (formNum >= 0 && formNum < sizeof(Motor_State) / sizeof(Motor_State[0])) {
-        qDebug() << "Motor State at index" << formNum << ":" << Motor_State[formNum];
-    } else {
-        qDebug() << "formNum is out of range";
-    }
+
+    qDebug() << "Motor State at index" << formNum << ":" << Motor_State[formNum];
+
 }
 
 

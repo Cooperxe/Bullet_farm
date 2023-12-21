@@ -18,9 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
     CANMenu();                                        //CAN设置启动
     ModelViewShow();
 
+    this->resize(1200, 470);
+    this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    this->setMinimumSize(600, 235); // 可选：设置窗口最小大小
+
     CANsetting = new Canseting();
     canthread = new CANThread();
-
 }
 
 MainWindow::~MainWindow()
