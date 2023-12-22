@@ -21,12 +21,16 @@ public:
     ~motor();
 
     quint16 MotorNumber;
+    Q_SIGNAL
+        void dischage_chage(quint32,quint16 ,bool);
 
 
 private slots:
     void Make_Curve_Time();
     void Make_Curve();
     void Dog_Time();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::motor *ui;

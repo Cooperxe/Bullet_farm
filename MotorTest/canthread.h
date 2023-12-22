@@ -10,7 +10,7 @@
 #define Motor_Num 10 //电机数量
 
 //数据帧数
-#define Motor_frame_Num 3 //电机帧数量
+#define Motor_frame_Num 5//电机帧数量
 #define SEM_frame_Num 2 //控制帧数量
 
 struct Statedate{quint8 state1:1;quint8 state2:1;quint8 state3:1;quint8 state4:1;quint8 state5:1;quint8 state6:1;quint8 state7:1;quint8 state8:1;};
@@ -60,7 +60,7 @@ public:
     bool reSetCAN();
 
     //Motor发送
-    void dischage_chage_send(quint32 ID, quint16 charge, bool state);
+    void dischage_chage_send(uint ID, quint16 charge, bool state);
 
     //Motor接受
     int dealDate(VCI_CAN_OBJ *vci,quint32 i);

@@ -1,5 +1,7 @@
 #include "canthread.h"
 #include "ControlCAN.h"
+#include "ui_motor.h"
+
 #include <QTime>
 #include <QCoreApplication>
 #include <QMetaType>
@@ -198,11 +200,20 @@ bool CANThread::sendData(qint32 ID, quint8 *ch, qint32 comNum)
     vco.DataLen = 8;
     for(UINT j = 0;j < 8;j++)
         vco.Data[j] = ch[j];
-    dwRel = VCI_Transmit(m_deviceType, m_debicIndex, comNum,&vco,1);
+    qDebug()<<"deviceType："<<deviceType;
+      qDebug()<<"debicIndex："<<debicIndex;
+
+    dwRel = VCI_Transmit(deviceType, debicIndex, comNum,&vco,8);
     if(dwRel>0)
+    {
+        qDebug()<<"send success";
         return true;
+    }
     else
+    {
+        qDebug()<<"send fail";
         return false;
+    }
 
 }
 
@@ -267,39 +278,39 @@ void CANThread::sleep(int msec)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
-void CANThread::dischage_chage_send(quint32 ID, quint16 charge, bool state)
+void CANThread::dischage_chage_send(uint ID, quint16 charge, bool state)
 {
+
+    qDebug() << "ID: " << ID;
+
     quint32 form = ID >> 16; //设备类型
-    quint32 formNum = (ID >> 8) & 0x000000FF; //设备序号
-    quint32 formframe = ID & 0x000000FF; //设备帧序号
+//    quint32 formframe = (ID >> 8) & 0x000000FF; //设备帧序号
+    quint32 formNum = ID & 0x000000FF; //设备序号
+    qDebug() << "form: " << form;
+    qDebug() << "formNum: " << formNum;
+//    qDebug() << "formframe: " << formframe;
 
-    if (formNum <= Motor_Num && formframe <= Motor_frame_Num)
+    if (formNum <= Motor_Num)
     {
-        if (!state)
-        {
-            MotorCurrentdate[0].frame[0].date[formNum].date16 = charge;
-            qDebug() << "DateChange";
-            qDebug()
-                     << "Motor1" << MotorCurrentdate[0].frame[0].date[0].date16
-                     << "Motor2" << MotorCurrentdate[0].frame[0].date[1].date16
-                     << "Motor3" << MotorCurrentdate[0].frame[0].date[2].date16
-                     << "Motor4" << MotorCurrentdate[0].frame[0].date[3].date16;
-        }
-        else
-        {
-            sendData(0x10010000, MotorCurrentdate[0].frame[0].date8, debicCom);
-            qDebug() << "SEND";
-        }
-    }
+            MotorCurrentdate[formNum].frame[3].date[0].date16 = charge;
 
+            sendData(ID, MotorCurrentdate[formNum].frame[3].date[0].date16, debicCom);
+            qDebug() << "SEND"<<MotorCurrentdate[0].frame[3].date8;
+
+    }
 }
 
 int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
 {
 
+    qDebug() << "ID: " << vci[i].ID;
+
     quint32 form=vci[i].ID>>16; //设备类型
     quint32 formNum=(vci[i].ID>>8)&0x000000FF; //设备序号
     quint32 formframe=vci[i].ID&0x000000FF; //设备帧序号
+    qDebug() << "form: " << form;
+    qDebug() << "formNum: " << formNum;
+    qDebug() << "formframe: " << formframe;
 
     if((formNum)>Motor_Num||formframe>Motor_frame_Num) return false;
     if((formNum)>0x10||formframe>Motor_frame_Num) return false;

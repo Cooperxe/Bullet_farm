@@ -67,30 +67,6 @@ void motor::Make_Curve()
     connect(&dog, SIGNAL(timeout()), this, SLOT(Dog_Time()));
 }
 
-
-//void motor::Dog_Time(){
-//               dataTimer.start(20);
-
-//}
-
-//void motor::Make_Curve_Time()
-//{
-
-//    double key = timer.elapsed() / 1000.0;
-//        static double lastPointKey = 0;
-
-
-//        if (key - lastPointKey > 0.02) {
-//        qDebug() << "Time:" << key - lastPointKey;
-//        ui->Motorqcustomplot->graph(0)->addData(key, 1);
-//        ui->Motorqcustomplot->xAxis->setRange(key + 3, 8, Qt::AlignRight);
-//        lastPointKey = key;
-
-//        }
-//}
-
-
-
 void motor::Dog_Time(){
     if(Motor_State[this->MotorNumber]==true){
         Dateing=true;
@@ -116,11 +92,8 @@ void motor::Make_Curve_Time()
     quint8 ii=0;
     if (key-lastPointKey > 0.002) // at most add point every 2 ms
     {
-        //曲线顺序"输入电压","输入电流","输出电流","电调温度","转速输入","转速输出","电机温度","定位角度"
-
         //第一帧"输入电压","输入电流","输出电流","电调温度"
         //第二帧  "转速输入","转速输出","电机温度","定位角度",
-        //第三帧"油门输出"，"MCU温度"
         if(this->Dateing){
             dateView[ii]=(float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[0].date16))/10;ii++;
             dateView[ii]=(float)(date16change(MotorCurrentdate[MotorNumber].frame[0].date[1].date16))/10;ii++;
@@ -160,3 +133,15 @@ void motor::Make_Curve_Time()
 
     ui->Motorqcustomplot->replot();
 }
+
+void motor::on_pushButton_clicked()
+{
+    QString textValue = ui->lineEdit->text(); // 获取lineEdit中的文本值
+    quint16 chargeValue = textValue.toUInt(); // 将文本值转换为quint16
+
+    qDebug()<<"pushButton->sendValue:"<<chargeValue;
+    qDebug()<<"pushButton->MotorNumber:"<<this->MotorNumber;
+
+    emit dischage_chage(0X10000100|(this->MotorNumber&0x000000FF),chargeValue, true);
+}
+
