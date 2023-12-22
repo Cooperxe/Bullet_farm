@@ -82,7 +82,7 @@ void MainWindow::ModelViewShow()
 
         verticalSplitter->addWidget(horizontalSplitter);
 
-        connect(Motor, SIGNAL(dischage_chage(quint32, quint16, bool)), this, SLOT(SendCAN(quint32, quint16, bool)));
+        connect(Motor, SIGNAL(dischage_chage(quint32, quint16 *, bool)), this, SLOT(SendCAN(quint32, quint16*, bool)));
     }
 }
 
@@ -136,7 +136,7 @@ void MainWindow::CanOpenWindow()
 
 
 //发送 槽
-void MainWindow::SendCAN(quint32 ID,quint16 charge ,bool state){
+void MainWindow::SendCAN(quint32 ID,quint16 * charge ,bool state){
     this->canthread->dischage_chage_send(ID,charge,state);
 
 }

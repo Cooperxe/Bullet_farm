@@ -136,18 +136,16 @@ void motor::Make_Curve_Time()
 
 void motor::on_pushButton_clicked()
 {
-//    qint8 arr[8];
+    quint16 chargeValue[4];
 
     QString textValue = ui->lineEdit->text(); // 获取lineEdit中的文本值
-    quint16 chargeValue = textValue.toUInt(); // 将文本值转换为quint16
-//    QString textValue2 = ui->lineEdit_2->text(); // 获取lineEdit中的文本值
-//    quint16 chargeValue2 = textValue2.toUInt(); // 将文本值转换为quint16
-//    QString textValue3 = ui->lineEdit_3->text(); // 获取lineEdit中的文本值
-//    quint16 chargeValue3 = textValue3.toUInt(); // 将文本值转换为quint16
+    chargeValue[0] = textValue.toUInt(); // 将文本值转换为quint16
 
-    qDebug()<<"pushButton->sendValue:"<<chargeValue;
-    qDebug()<<"pushButton->MotorNumber:"<<this->MotorNumber;
+    QString textValue3 = ui->lineEdit_3->text(); // 获取lineEdit中的文本值
+    chargeValue[2] = textValue3.toUInt(); // 将文本值转换为quint1
 
+    qDebug() << "Charge in hexadecimal:" << QString("0x%1").arg(chargeValue[0], 0, 16);
+    qDebug() << "Charge in hexadecimal:" << QString("0x%1").arg(chargeValue[2], 0, 16);
 
     emit dischage_chage(0X10000100|(this->MotorNumber&0x000000FF),chargeValue, true);
 }

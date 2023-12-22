@@ -60,7 +60,7 @@ public:
     bool reSetCAN();
 
     //Motor发送
-    void dischage_chage_send(uint ID, quint16 charge, bool state);
+    void dischage_chage_send(uint ID, quint16* charge, bool state);
 
     //Motor接受
     int dealDate(VCI_CAN_OBJ *vci,quint32 i);

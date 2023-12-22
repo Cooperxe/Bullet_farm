@@ -282,7 +282,7 @@ void CANThread::sleep(int msec)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
-void CANThread::dischage_chage_send(uint ID, quint16 charge, bool state)
+void CANThread::dischage_chage_send(uint ID, quint16* charge, bool state)
 {
 
     qDebug() << "ID: " << ID;
@@ -295,9 +295,16 @@ void CANThread::dischage_chage_send(uint ID, quint16 charge, bool state)
 
     if (formNum <= Motor_Num)
     {
-        MotorCurrentdate[formNum].frame[3].date[0].date16 = charge; //formNum电机/frame帧数/date 2xbyte 电机转速
-        qDebug() << "Charge in hexadecimal:" << QString("0x%1").arg(charge, 0, 16);
+        MotorCurrentdate[formNum].frame[3].date[0].date16 = date16change(charge[0]); //formNum电机/frame帧数/date 2xbyte 电机转速
+        MotorCurrentdate[formNum].frame[3].date[1].date16 = date16change(charge[1]); //formNum电机/frame帧数/date 2xbyte 电机转速
+        MotorCurrentdate[formNum].frame[3].date[2].date16 = date16change(charge[2]); //formNum电机/frame帧数/date 2xbyte 电机转速
+        MotorCurrentdate[formNum].frame[3].date[3].date16 = date16change(charge[3]); //formNum电机/frame帧数/date 2xbyte 电机转速
+
+//        qDebug() << "Charge in hexadecimal:" << QString("0x%1").arg(charge, 0, 16);
         qDebug() << "MotorCurrentdate in hexadecimal:" << QString("0x%1").arg(MotorCurrentdate[formNum].frame[3].date[0].date16, 0, 16);
+        qDebug() << "MotorCurrentdate in hexadecimal:" << QString("0x%1").arg(MotorCurrentdate[formNum].frame[3].date[1].date16, 0, 16);
+        qDebug() << "MotorCurrentdate in hexadecimal:" << QString("0x%1").arg(MotorCurrentdate[formNum].frame[3].date[2].date16, 0, 16);
+        qDebug() << "MotorCurrentdate in hexadecimal:" << QString("0x%1").arg(MotorCurrentdate[formNum].frame[3].date[3].date16, 0, 16);
 
         sendData(ID, MotorCurrentdate[formNum].frame[3].date8, debicCom);
             qDebug() << "SEND"<<MotorCurrentdate[0].frame[3].date8;
