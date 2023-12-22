@@ -19,7 +19,7 @@ class motor : public QGroupBox
 public:
     explicit motor(QWidget *parent = nullptr);
     ~motor();
-
+//    quint16 chargeValue[0];
     quint16 MotorNumber;
     Q_SIGNAL
         void dischage_chage(quint32,quint16 ,bool);

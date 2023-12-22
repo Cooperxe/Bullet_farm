@@ -199,11 +199,15 @@ bool CANThread::sendData(qint32 ID, quint8 *ch, qint32 comNum)
     vco.ExternFlag = ExtEndable;
     vco.DataLen = 8;
     for(UINT j = 0;j < 8;j++)
+    {
         vco.Data[j] = ch[j];
-    qDebug()<<"deviceType："<<deviceType;
-      qDebug()<<"debicIndex："<<debicIndex;
+        qDebug() << " vco.Data in hexadecimal:" << QString("0x%1").arg( vco.Data[j], 0, 16);
+     }
 
-    dwRel = VCI_Transmit(deviceType, debicIndex, comNum,&vco,8);
+    qDebug()<<"deviceType："<<deviceType;
+    qDebug()<<"debicIndex："<<debicIndex;
+
+    dwRel = VCI_Transmit(deviceType, debicIndex, comNum,&vco,1);
     if(dwRel>0)
     {
         qDebug()<<"send success";
@@ -282,7 +286,6 @@ void CANThread::dischage_chage_send(uint ID, quint16 charge, bool state)
 {
 
     qDebug() << "ID: " << ID;
-
     quint32 form = ID >> 16; //设备类型
 //    quint32 formframe = (ID >> 8) & 0x000000FF; //设备帧序号
     quint32 formNum = ID & 0x000000FF; //设备序号
@@ -292,9 +295,11 @@ void CANThread::dischage_chage_send(uint ID, quint16 charge, bool state)
 
     if (formNum <= Motor_Num)
     {
-            MotorCurrentdate[formNum].frame[3].date[0].date16 = charge;
+        MotorCurrentdate[formNum].frame[3].date[0].date16 = charge; //formNum电机/frame帧数/date 2xbyte 电机转速
+        qDebug() << "Charge in hexadecimal:" << QString("0x%1").arg(charge, 0, 16);
+        qDebug() << "MotorCurrentdate in hexadecimal:" << QString("0x%1").arg(MotorCurrentdate[formNum].frame[3].date[0].date16, 0, 16);
 
-            sendData(ID, MotorCurrentdate[formNum].frame[3].date[0].date16, debicCom);
+        sendData(ID, MotorCurrentdate[formNum].frame[3].date8, debicCom);
             qDebug() << "SEND"<<MotorCurrentdate[0].frame[3].date8;
 
     }
