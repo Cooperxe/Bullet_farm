@@ -24,8 +24,6 @@ public:
     Q_SIGNAL
         void dischage_chage(quint32,quint16 * ,bool);
 
-//    union MotorLine{q16_q8x2 date[4];quint8 date8[8];Alertdate alertdate[8]; Statedate statedate[8];};
-//    union q8x2{q8_q2x4_q1x8 date8[2];quint16 date16;};
 
 
 private slots:
@@ -34,6 +32,8 @@ private slots:
     void Dog_Time();
 
     void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::motor *ui;

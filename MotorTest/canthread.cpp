@@ -204,9 +204,6 @@ bool CANThread::sendData(qint32 ID, quint8 *ch, qint32 comNum)
         qDebug() << " vco.Data in hexadecimal:" << QString("0x%1").arg( vco.Data[j], 0, 16);
      }
 
-    qDebug()<<"deviceType："<<deviceType;
-    qDebug()<<"debicIndex："<<debicIndex;
-
     dwRel = VCI_Transmit(deviceType, debicIndex, comNum,&vco,1);
     if(dwRel>0)
     {
@@ -299,8 +296,6 @@ void CANThread::dischage_chage_send(uint ID, quint16* charge, bool state)
         MotorCurrentdate[formNum].frame[3].date[1].date16 = date16change(charge[1]); //formNum电机/frame帧数/date 2xbyte 电机转速
         MotorCurrentdate[formNum].frame[3].date[2].date16 = date16change(charge[2]); //formNum电机/frame帧数/date 2xbyte 电机转速
         MotorCurrentdate[formNum].frame[3].date[3].date16 = date16change(charge[3]); //formNum电机/frame帧数/date 2xbyte 电机转速
-
-//        qDebug() << "Charge in hexadecimal:" << QString("0x%1").arg(charge, 0, 16);
         qDebug() << "MotorCurrentdate in hexadecimal:" << QString("0x%1").arg(MotorCurrentdate[formNum].frame[3].date[0].date16, 0, 16);
         qDebug() << "MotorCurrentdate in hexadecimal:" << QString("0x%1").arg(MotorCurrentdate[formNum].frame[3].date[1].date16, 0, 16);
         qDebug() << "MotorCurrentdate in hexadecimal:" << QString("0x%1").arg(MotorCurrentdate[formNum].frame[3].date[2].date16, 0, 16);
@@ -308,8 +303,8 @@ void CANThread::dischage_chage_send(uint ID, quint16* charge, bool state)
 
         sendData(ID, MotorCurrentdate[formNum].frame[3].date8, debicCom);
             qDebug() << "SEND"<<MotorCurrentdate[0].frame[3].date8;
-
     }
+
 }
 
 int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
@@ -320,9 +315,6 @@ int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
     quint32 form=vci[i].ID>>16; //设备类型
     quint32 formNum=(vci[i].ID>>8)&0x000000FF; //设备序号
     quint32 formframe=vci[i].ID&0x000000FF; //设备帧序号
-    qDebug() << "form: " << form;
-    qDebug() << "formNum: " << formNum;
-    qDebug() << "formframe: " << formframe;
 
     if((formNum)>Motor_Num||formframe>Motor_frame_Num) return false;
     if((formNum)>0x10||formframe>Motor_frame_Num) return false;
@@ -332,9 +324,6 @@ int CANThread::dealDate(VCI_CAN_OBJ *vci,quint32 i)
     }
 
     Motor_State[formNum]=true;
-
-    qDebug() << "Motor State at index" << formNum << ":" << Motor_State[formNum];
-
 }
 
 

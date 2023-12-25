@@ -150,3 +150,17 @@ void motor::on_pushButton_clicked()
     emit dischage_chage(0X10000100|(this->MotorNumber&0x000000FF),chargeValue, true);
 }
 
+
+void motor::on_pushButton_2_clicked()
+{
+    quint16 chargeValue[4];
+    QString textValue = ui->lineEdit_2->text(); // 获取lineEdit中的文本值
+    chargeValue[0] = textValue.toUInt(); // 将文本值转换为quint16
+
+    quint16 motornum = ((this->MotorNumber)<<8);
+
+    qDebug() << "Charge in hexadecimal:" << QString("0x%1").arg(chargeValue[0], 0, 16);
+    qDebug()<<"motornum:"<<motornum;
+    emit dischage_chage(0X1000F0FF | motornum, chargeValue, true);
+
+}
